@@ -1,0 +1,22 @@
+### Register user
+POST http://localhost:3000/register
+Content-Type: application/json
+
+{
+  "email": "newuser@example.com",
+  "password": "newpassword"
+}
+
+### Login user
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+  "email": "newuser@example.com",
+  "password": "newpassword"
+}
+
+### Get profile (replace TOKEN with your login token)
+GET http://localhost:3000/user/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ld3VzZXJAZXhhbXBsZS5jb20iLCJpYXQiOjE3NDg5NjMwOTgsImV4cCI6MTc0ODk2NjY5OH0.-YJntmdOPdzQsEjMYOUnajUo8FqpuybSrn7hYsxp3k4
+

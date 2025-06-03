@@ -1,0 +1,58 @@
+const express = require('express');
+const app = express();
+const port = 3000;
+
+// Middleware to parse JSON body
+app.use(express.json());
+
+// Dummy in-memory user store
+const users = [];
+
+// Register route
+app.post('/api/register', (req, res) => {
+  const { username, password, email } = req.body;
+
+  if (!username || !password || !email) {
+    return res.status(400).json({ error: 'Missing fields' });
+  }
+
+  // Check if user already exists
+  const existingUser = users.find(u => u.username === username);
+  if (existingUser) {
+    return res.status(409).json({ error: 'User already exists' });
+  }
+
+  // Save new user
+  users.push({ username, password, email });
+  res.status(201).json({ message: 'User registered successfully' });
+});
+
+// Login route
+app.post('/api/login', (req, res) => {
+  const { username, password } = req.body;
+
+  // Find user
+  const user = users.find(u => u.username === username && u.password === password);
+  if (!user) {
+    return res.status(401).json({ error: 'Invalid credentials' });
+  }
+
+  // For demo, just send a dummy token
+  const token = 'dummy-token-12345';
+  res.json({ token });
+});
+
+// Protected route example
+app.get('/api/user/profile', (req, res) => {
+  const authHeader = req.headers['authorization'];
+  if (!authHeader || authHeader !== 'Bearer dummy-token-12345') {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+
+  // Return dummy profile info
+  res.json({ username: 'newuser@example.com', email: 'newuser@example.com' });
+});
+
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});
