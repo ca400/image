@@ -94,34 +94,48 @@
       const formData = new FormData();
       formData.append('image', fileInput.files[0]);
 
-      const res = await fetch('/upload', {
-        method: 'POST',
-        headers: { Authorization: 'Bearer ' + token },
-        body: formData,
-      });
+      try {
+        const res = await fetch('/upload', {
+          method: 'POST',
+          headers: {
+            Authorization: 'Bearer ' + token
+          },
+          body: formData,
+        });
 
-      const data = await res.json();
-      if (res.ok) {
-        alert(data.message);
-        loadImages();
-        fileInput.value = '';
-      } else {
-        alert('Upload failed: ' + data.message);
+        const data = await res.json();
+        if (res.ok) {
+          alert(data.message);
+          fileInput.value = '';
+          loadImages();
+        } else {
+          alert('Upload failed: ' + data.message);
+        }
+      } catch (error) {
+        alert('Error uploading image.');
       }
     });
 
     async function loadImages() {
-      const res = await fetch('/uploaded-images?token=' + token);
-      const data = await res.json();
-      if (res.ok) {
-        imagesContainer.innerHTML = '';
-        data.images.forEach(src => {
-          const img = document.createElement('img');
-          img.src = src;
-          imagesContainer.appendChild(img);
+      try {
+        const res = await fetch('/uploaded-images', {
+          headers: {
+            Authorization: 'Bearer ' + token
+          }
         });
-      } else {
-        imagesContainer.innerHTML = 'Failed to load images.';
+        const data = await res.json();
+        if (res.ok) {
+          imagesContainer.innerHTML = '';
+          data.images.forEach(src => {
+            const img = document.createElement('img');
+            img.src = src;
+            imagesContainer.appendChild(img);
+          });
+        } else {
+          imagesContainer.innerHTML = 'Failed to load images.';
+        }
+      } catch (error) {
+        imagesContainer.innerHTML = 'Error loading images.';
       }
     }
 

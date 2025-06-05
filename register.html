@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Register</title>
-   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <h1>Register</h1>
@@ -12,7 +12,13 @@
     <input type="password" id="password" placeholder="Password" required><br><br>
     <button type="submit">Register</button>
   </form>
+
   <div id="message" style="margin-top: 10px; color: green;"></div>
+
+  <!-- Link to login page -->
+  <p style="margin-top: 15px;">Already have an account? 
+    <a href="/login.html">Log in here</a>
+  </p>
 
   <script>
     document.getElementById('registerForm').addEventListener('submit', async function (e) {
